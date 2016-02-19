@@ -13,7 +13,9 @@
             var url = location.href;
             var tcm = location.href.substring(url.indexOf("uri=tcm%3A") + 10, url.indexOf("#"));
 
-            jQuery('compUri').val('tcm:' + tcm); // Declare a proxy to reference the hub. 
+            document.getElementById("compUri").innerHTML = 'tcm:' + tcm;
+          
+            getLocalizedInfo(tcm);
 
             jQuery('#btnUnlocalize').click(function () {
                 console.log('#btnUnlocalize tcm=' + tcm);
@@ -21,52 +23,48 @@
             });
         });
 
-        function unlocalizeComp(tcm) {
-            console.log('unlocalizeComp');
-            
-            Alchemy.Plugins["${PluginName}"].Api.UnlocalizeService.unlocalize(tcm)
+        function getLocalizedInfo(tcm) {
+            console.log('getLocalizedInfo');
+
+            Alchemy.Plugins["${PluginName}"].Api.UnlocalizeService.getLocalizedCount(tcm)
               .success(function (response) {
-                  alert(response);
+                  document.getElementById("localizedCount").innerHTML = response;
               })
             .error(function (errorCode, errorObject) {
                 alert("I was an error!" + errorCode);
                 console.log(errorObject);
             });
-           
         }
+
+        function unlocalizeComp(tcm) {
+            // code below borrowed from 'Real Time Publishing Stats' plugin
+            console.log('unlocalizeComp');
+            
+            Alchemy.Plugins["${PluginName}"].Api.UnlocalizeService.unlocalize(tcm)
+              .success(function (response) {
+                  document.getElementById("results").innerHTML = response;
+              })
+            .error(function (errorCode, errorObject) {
+                alert("I was an error!" + errorCode);
+                console.log(errorObject);
+            });
+        }
+
+       
     </script>
 
 </head>
 <body>
-    <h1>UnLocalize</h1>
-    <button type="button" id="btnUnlocalize" class="btn" value="UnLocalize">UnLocalize</button>
-    <div id="compUri"></div>
-
-
-
+    <h1>UnLocalize <span id="compUri"></span>?</h1>
+    <h2><span id="localizedCount"></span> Components Localized</h2>
+    <br />
+    <span style="color:red; font-size:medium">
+        Do you want to UnLocalize the Component?  Warning:  This will remove all localize content from the localized Components. 
+    </span>
+    <br /><br /><br />
+    <button type="submit" id="btnUnlocalize" class="btn" value="UnLocalize">UnLocalize it</button>
+    <br /><br />
+    <h2><span id="results" style="color:green"></span></h2>
+    
 </body>
-
 </html>
-
-
-
-
-
-
-
-<%--<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>Add User By Name</title>
-            <script src="${JsUrl}/jquery-2.1.4.js" lang="javascript"></script>
-    </head>
-    <body>
-        <div class="content">
-            <h1>UnLocalize All Children</h1>
-          <span id="compid">tcm</span>
-            <div class="buttons right">
-                <c:Button ID="UnlocalizeButton" runat="server" Label="Unlocalize" TabIndex="1" class="button2013 green tridion button" />
-                <c:Button ID="CancelButton" runat="server" Label="Cancel" TabIndex="1" class="button2013 gray tridion button" />
-            </div>
-        </div>
-    </body>
-</html>--%>

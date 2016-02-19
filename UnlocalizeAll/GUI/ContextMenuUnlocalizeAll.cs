@@ -9,8 +9,12 @@ namespace UnlocalizeAll.GUI
         {
             AssignId = "";
 
+
+            // The label of the button.
+            Name = "UnlocalizeAll";
+
             // Use this property to specify where in the context menu your items will go
-            InsertBefore = Constants.ContextMenuIds.MainContextMenu.StartLocation;
+            InsertBefore = Constants.ContextMenuIds.MainContextMenu.Blueprinting;
 
             // Use AddItem() or AddSubMenu() to add items for this context menu
             //       element id      title        command name

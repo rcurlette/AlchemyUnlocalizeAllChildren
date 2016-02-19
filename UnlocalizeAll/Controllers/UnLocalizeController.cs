@@ -36,11 +36,13 @@ namespace UnlocalizeAll.Controllers
         public string Unlocalize(string uri = "")
         {
             uri = "tcm:" + uri;
-            BluePrintChainFilterData filter = new BluePrintChainFilterData();
-            filter.Direction = BluePrintChainDirection.Down;
-            var children = Client.GetListXml(uri, filter);
 
+            UsingItemsFilterData filter = new UsingItemsFilterData();
+            filter.IncludeLocalCopies = true;
+
+            var children = Client.GetListXml(uri, filter);
             int count = 0;
+
             foreach (XElement item in children.Elements())
             {
                 Client.UnLocalize(item.Attribute("ID").Value, new ReadOptions());
@@ -48,6 +50,26 @@ namespace UnlocalizeAll.Controllers
             }
 
             return count.ToString() + " Items Unlocalized";
+        }
+
+        [HttpGet]
+        [Route("GetLocalizedCount/{uri}")]
+        public string GetLocalizedCount(string uri = "")
+        {
+            uri = "tcm:" + uri;
+
+            UsingItemsFilterData filter = new UsingItemsFilterData();
+            filter.IncludeLocalCopies = true;
+
+            var children = Client.GetListXml(uri, filter);
+            int count = 0;
+
+            foreach (XElement item in children.Elements())
+            {
+                count++;
+            }
+
+            return count.ToString();
         }
     }
 }

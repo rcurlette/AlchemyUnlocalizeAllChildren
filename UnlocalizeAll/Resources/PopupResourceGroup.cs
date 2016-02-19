@@ -8,7 +8,7 @@ namespace UnlocalizeAll.Resources
         public PopupResourceGroup()
         {
             AddFile("jquery-2.1.4.js");
-            //AddFile("UnlocalizePopup.js");
+          
             AddFile("Popup.css");
             
             AttachToView("UnlocalizePopup.aspx");
